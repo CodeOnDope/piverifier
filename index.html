@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🥧 Pi Recitation Verifier - 300 Digits</title>
+    <title>🥧 Pi Recitation Verifier - 1000 Digits</title>
     <style>
         :root {
-            /* Mobile-first sizing */
             --digit-size: 32px;
             --digit-font: 1.1rem;
             --digit-gap: 3px;
             --group-gap: 10px;
             --row-gap: 6px;
             --container-padding: 10px;
-            --header-height: 110px;
+            --header-height: 145px;
         }
 
         * {
@@ -45,7 +44,7 @@
             right: 0;
             z-index: 1000;
             background: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
-            padding: 8px 10px;
+            padding: 6px 10px;
             border-bottom: 3px solid rgba(251, 191, 36, 0.4);
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
         }
@@ -54,17 +53,74 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .sticky-row-2 {
-            margin-top: 8px;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sticky-row-3 {
+            margin-top: 6px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
+        }
+
+        /* Target Input */
+        .target-input-container {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0,0,0,0.3);
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .target-label {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .target-input {
+            width: 55px;
+            padding: 3px 6px;
+            border-radius: 5px;
+            border: 2px solid rgba(251, 191, 36, 0.4);
+            background: rgba(0,0,0,0.4);
+            color: #fbbf24;
+            font-size: 0.8rem;
+            font-weight: 700;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+        }
+
+        .target-input:focus {
+            outline: none;
+            border-color: #fbbf24;
+        }
+
+        .target-set-btn {
+            padding: 3px 8px;
+            background: #6366f1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .target-set-btn:active {
+            transform: scale(0.95);
         }
 
         /* Current Digit Display */
@@ -75,20 +131,20 @@
         }
 
         .sticky-pi-prefix {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: rgba(255,255,255,0.4);
             font-family: 'Courier New', monospace;
         }
 
         .sticky-context {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-family: 'Courier New', monospace;
             color: #a5b4fc;
-            padding: 3px 6px;
+            padding: 2px 5px;
             background: rgba(129, 140, 248, 0.25);
-            border-radius: 5px;
-            min-width: 24px;
+            border-radius: 4px;
+            min-width: 22px;
             text-align: center;
         }
 
@@ -98,22 +154,22 @@
         }
 
         .sticky-current-digit {
-            font-size: 2.8rem;
+            font-size: 2.4rem;
             font-weight: 900;
             font-family: 'Courier New', monospace;
             color: #1a1a2e;
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            padding: 4px 14px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(251, 191, 36, 0.5);
-            min-width: 55px;
+            padding: 3px 11px;
+            border-radius: 8px;
+            box-shadow: 0 0 18px rgba(251, 191, 36, 0.5);
+            min-width: 45px;
             text-align: center;
         }
 
         /* Stats */
         .sticky-stats {
             display: flex;
-            gap: 15px;
+            gap: 10px;
         }
 
         .sticky-stat {
@@ -121,7 +177,7 @@
         }
 
         .sticky-stat-value {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: 700;
             font-family: 'Courier New', monospace;
         }
@@ -131,26 +187,26 @@
         .sticky-stat-value.speed { color: #f472b6; }
 
         .sticky-stat-label {
-            font-size: 0.55rem;
+            font-size: 0.45rem;
             color: rgba(255,255,255,0.5);
             text-transform: uppercase;
         }
 
-        /* Controls */
+        /* Header Controls */
         .sticky-controls {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .sticky-btn {
-            padding: 8px 16px;
-            border-radius: 8px;
+            padding: 5px 12px;
+            border-radius: 6px;
             border: none;
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.15s;
         }
 
         .sticky-btn.start { background: #10b981; color: white; }
@@ -163,20 +219,20 @@
         .sticky-speed {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
             background: rgba(0,0,0,0.3);
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 4px 8px;
+            border-radius: 15px;
         }
 
         .sticky-speed-label {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             color: rgba(255,255,255,0.5);
         }
 
         .sticky-speed-slider {
-            width: 80px;
-            height: 6px;
+            width: 60px;
+            height: 5px;
             -webkit-appearance: none;
             appearance: none;
             background: linear-gradient(to right, #60a5fa, #fbbf24, #f87171);
@@ -186,36 +242,35 @@
 
         .sticky-speed-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
+            width: 14px;
+            height: 14px;
             background: white;
             border-radius: 50%;
             cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
         .sticky-speed-value {
-            font-size: 0.85rem;
+            font-size: 0.7rem;
             font-weight: 700;
             color: #fbbf24;
-            min-width: 50px;
+            min-width: 40px;
         }
 
         /* Main Container */
         .container {
             width: 100%;
             margin: 0 auto;
-            padding: calc(var(--header-height) + 15px) var(--container-padding) 20px;
+            padding: calc(var(--header-height) + 10px) var(--container-padding) 20px;
         }
 
         /* Header */
         .header {
             text-align: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .header h1 {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             background: linear-gradient(135deg, #fbbf24, #f59e0b);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -224,19 +279,28 @@
 
         .header p {
             color: rgba(255,255,255,0.6);
-            font-size: 0.7rem;
-            margin-top: 4px;
+            font-size: 0.6rem;
+            margin-top: 2px;
         }
 
-        /* Speed Buttons on Sides */
-        .speed-btn-side {
+        /* ========== SIDE CONTROL PANELS ========== */
+        .side-panel {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
             z-index: 500;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .side-panel.left { left: 2px; }
+        .side-panel.right { right: 2px; }
+
+        .side-btn {
             width: 44px;
-            height: 55px;
-            border-radius: 10px;
+            height: 44px;
+            border-radius: 8px;
             border: none;
             font-weight: 700;
             cursor: pointer;
@@ -244,104 +308,86 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 1.1rem;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            font-size: 0.95rem;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
         }
 
-        .speed-btn-side.slower {
-            left: 3px;
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
+        .side-btn:active {
+            transform: scale(0.92);
         }
 
-        .speed-btn-side.faster {
-            right: 3px;
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: white;
+        .side-btn .label {
+            font-size: 0.3rem;
+            margin-top: 1px;
         }
 
-        .speed-btn-side:active {
-            transform: translateY(-50%) scale(0.95);
+        .side-btn .value {
+            font-size: 0.45rem;
         }
 
-        .speed-btn-side .label {
-            font-size: 0.4rem;
-            margin-top: 2px;
-        }
-
-        .speed-btn-side .value {
-            font-size: 0.55rem;
-        }
+        .side-btn.slower { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .side-btn.faster { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .side-btn.start { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .side-btn.pause { background: linear-gradient(135deg, #eab308, #ca8a04); color: #1a1a2e; }
+        .side-btn.reset { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: white; }
 
         /* Digits Section */
         .digits-section {
             background: rgba(0,0,0,0.35);
-            border-radius: 12px;
-            padding: 15px 8px;
-            margin: 0 auto 15px;
+            border-radius: 10px;
+            padding: 10px 5px;
+            margin: 0 auto 10px;
             border: 2px solid rgba(251, 191, 36, 0.2);
             max-width: 100%;
         }
 
         .digits-title {
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: rgba(255,255,255,0.8);
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         /* Legend */
         .digits-legend {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 12px;
+            gap: 10px;
+            margin-bottom: 8px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 0.65rem;
+            gap: 3px;
+            font-size: 0.55rem;
             color: rgba(255,255,255,0.7);
         }
 
         .legend-box {
-            width: 20px;
-            height: 22px;
-            border-radius: 4px;
+            width: 16px;
+            height: 18px;
+            border-radius: 3px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.65rem;
+            font-size: 0.55rem;
             font-family: 'Courier New', monospace;
         }
 
-        .legend-box.recited {
-            background: rgba(129, 140, 248, 0.5);
-            color: #c7d2fe;
-            border: 2px solid #818cf8;
-        }
+        .legend-box.recited { background: rgba(129, 140, 248, 0.5); color: #c7d2fe; border: 2px solid #818cf8; }
+        .legend-box.current { background: rgba(129, 140, 248, 0.5); color: #fff; border: 2px solid #fbbf24; }
+        .legend-box.remaining { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.35); }
 
-        .legend-box.current {
-            background: rgba(129, 140, 248, 0.5);
-            color: #fff;
-            border: 2px solid #fbbf24;
-        }
-
-        .legend-box.remaining {
-            background: rgba(255,255,255,0.06);
-            color: rgba(255,255,255,0.35);
-        }
-
-        /* DIGITS GRID - MOBILE FIRST, LARGE & READABLE */
+        /* DIGITS GRID */
         .digits-grid {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: var(--row-gap);
-            padding: 5px 0;
+            padding: 4px 0;
         }
 
         .digits-row {
@@ -352,11 +398,11 @@
         }
 
         .row-label {
-            font-size: 0.7rem;
+            font-size: 0.55rem;
             color: rgba(255,255,255,0.5);
-            min-width: 32px;
+            min-width: 28px;
             text-align: right;
-            padding-right: 6px;
+            padding-right: 4px;
             font-family: 'Courier New', monospace;
             font-weight: 500;
         }
@@ -368,11 +414,11 @@
         }
 
         .pi-prefix-grid {
-            font-size: calc(var(--digit-font) + 0.1rem);
+            font-size: calc(var(--digit-font) + 0.05rem);
             font-weight: 700;
             color: #fbbf24;
             font-family: 'Courier New', monospace;
-            margin-right: 4px;
+            margin-right: 2px;
         }
 
         /* LARGE READABLE DIGITS */
@@ -381,257 +427,127 @@
             align-items: center;
             justify-content: center;
             width: var(--digit-size);
-            height: calc(var(--digit-size) + 4px);
+            height: calc(var(--digit-size) + 3px);
             font-size: var(--digit-font);
             font-weight: 700;
             font-family: 'Courier New', monospace;
-            border-radius: 6px;
-            transition: background 0.15s, border 0.15s, box-shadow 0.15s;
+            border-radius: 4px;
+            transition: background 0.12s, border 0.12s;
         }
 
-        /* Digit States - Soft colors, no yellow flash */
-        .digit.recited {
-            background: rgba(129, 140, 248, 0.45);
-            color: #d4d9ff;
-            border: 2px solid rgba(129, 140, 248, 0.5);
-        }
+        .digit.recited { background: rgba(129, 140, 248, 0.45); color: #d4d9ff; border: 2px solid rgba(129, 140, 248, 0.5); }
+        .digit.current { background: rgba(129, 140, 248, 0.55); color: #ffffff; font-weight: 900; border: 3px solid #fbbf24; box-shadow: 0 0 10px rgba(251, 191, 36, 0.6); }
+        .digit.remaining { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.3); border: 2px solid rgba(255,255,255,0.05); }
 
-        .digit.current {
-            background: rgba(129, 140, 248, 0.55);
-            color: #ffffff;
-            font-weight: 900;
-            border: 3px solid #fbbf24;
-            box-shadow: 0 0 15px rgba(251, 191, 36, 0.6);
-        }
-
-        .digit.remaining {
-            background: rgba(255,255,255,0.06);
-            color: rgba(255,255,255,0.35);
-            border: 2px solid rgba(255,255,255,0.08);
-        }
-
-        .digit-space {
-            width: var(--group-gap);
-        }
+        .digit-space { width: var(--group-gap); }
 
         /* Progress Bar */
-        .progress-section {
-            margin-top: 12px;
-        }
+        .progress-section { margin-top: 8px; }
+        .progress-bar-container { background: rgba(255,255,255,0.1); border-radius: 5px; height: 8px; overflow: hidden; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, #6366f1, #8b5cf6); border-radius: 5px; transition: width 0.2s ease; }
+        .progress-text { text-align: center; margin-top: 4px; font-size: 0.65rem; color: rgba(255,255,255,0.6); }
+        .progress-text span { color: #a5b4fc; font-weight: 700; }
 
-        .progress-bar-container {
-            background: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            height: 12px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #6366f1, #8b5cf6);
-            border-radius: 8px;
-            transition: width 0.2s ease;
-        }
-
-        .progress-text {
+        /* Target reached notification */
+        .target-reached {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #10b981, #059669);
+            padding: 25px 40px;
+            border-radius: 16px;
             text-align: center;
-            margin-top: 6px;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.6);
+            z-index: 2000;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+            animation: popIn 0.3s ease;
         }
 
-        .progress-text span {
-            color: #a5b4fc;
+        @keyframes popIn {
+            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        .target-reached h2 { font-size: 1.3rem; margin-bottom: 8px; }
+        .target-reached p { font-size: 0.9rem; opacity: 0.9; }
+        .target-reached .close-btn {
+            margin-top: 12px;
+            padding: 8px 25px;
+            background: white;
+            color: #059669;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
             font-weight: 700;
+            cursor: pointer;
         }
 
         /* Verify Links */
-        .verify-section {
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 15px;
-        }
-
-        .verify-title {
-            text-align: center;
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.6);
-            margin-bottom: 8px;
-        }
-
-        .verify-links {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .verify-link {
-            padding: 6px 10px;
-            background: rgba(99, 102, 241, 0.2);
-            border-radius: 6px;
-            color: #a5b4fc;
-            text-decoration: none;
-            font-size: 0.6rem;
-            border: 1px solid rgba(99, 102, 241, 0.3);
-        }
+        .verify-section { background: rgba(255,255,255,0.05); border-radius: 8px; padding: 8px; margin-bottom: 10px; }
+        .verify-title { text-align: center; font-size: 0.65rem; color: rgba(255,255,255,0.6); margin-bottom: 5px; }
+        .verify-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; }
+        .verify-link { padding: 4px 7px; background: rgba(99, 102, 241, 0.2); border-radius: 4px; color: #a5b4fc; text-decoration: none; font-size: 0.5rem; border: 1px solid rgba(99, 102, 241, 0.3); }
 
         /* Footer */
-        .footer {
-            text-align: center;
-            padding: 10px;
-            font-size: 0.6rem;
-            color: #6b7280;
-        }
+        .footer { text-align: center; padding: 6px; font-size: 0.5rem; color: #6b7280; }
 
-        /* Shortcuts - Desktop only */
-        .shortcuts-hint {
-            text-align: center;
-            font-size: 0.55rem;
-            color: rgba(255,255,255,0.3);
-            margin: 10px 0;
-            display: none;
-        }
+        /* Shortcuts */
+        .shortcuts-hint { text-align: center; font-size: 0.45rem; color: rgba(255,255,255,0.3); margin: 6px 0; display: none; }
 
         /* ========== RESPONSIVE DESIGN ========== */
 
-        /* Small Mobile (< 380px) - 5 digits per row */
         @media (max-width: 379px) {
-            :root {
-                --digit-size: 38px;
-                --digit-font: 1.2rem;
-                --digit-gap: 4px;
-                --group-gap: 10px;
-                --container-padding: 50px;
-            }
-            
-            .sticky-current-digit {
-                font-size: 2.2rem;
-                padding: 3px 10px;
-            }
-            
-            .sticky-context {
-                display: none;
-            }
-            
-            .row-label {
-                min-width: 28px;
-                font-size: 0.6rem;
-            }
+            :root { --digit-size: 34px; --digit-font: 1.1rem; --digit-gap: 3px; --group-gap: 7px; --container-padding: 50px; --header-height: 140px; }
+            .sticky-context { display: none; }
+            .sticky-current-digit { font-size: 1.9rem; padding: 2px 9px; }
+            .row-label { min-width: 24px; font-size: 0.45rem; }
+            .side-btn { width: 40px; height: 40px; font-size: 0.85rem; }
         }
 
-        /* Standard Mobile (380px - 479px) - 5 digits per row */
         @media (min-width: 380px) and (max-width: 479px) {
-            :root {
-                --digit-size: 42px;
-                --digit-font: 1.3rem;
-                --digit-gap: 5px;
-                --group-gap: 12px;
-                --container-padding: 52px;
-            }
+            :root { --digit-size: 38px; --digit-font: 1.2rem; --digit-gap: 3px; --group-gap: 9px; --container-padding: 52px; --header-height: 145px; }
+            .row-label { min-width: 26px; font-size: 0.5rem; }
         }
 
-        /* Large Mobile (480px - 599px) - 10 digits per row */
         @media (min-width: 480px) and (max-width: 599px) {
-            :root {
-                --digit-size: 36px;
-                --digit-font: 1.15rem;
-                --digit-gap: 4px;
-                --group-gap: 10px;
-                --container-padding: 55px;
-            }
-            
-            .row-label {
-                min-width: 35px;
-                font-size: 0.7rem;
-            }
+            :root { --digit-size: 32px; --digit-font: 1.05rem; --digit-gap: 3px; --group-gap: 9px; --container-padding: 54px; }
+            .row-label { min-width: 30px; font-size: 0.55rem; }
         }
 
-        /* Tablet (600px - 899px) - 10 digits per row */
         @media (min-width: 600px) and (max-width: 899px) {
-            :root {
-                --digit-size: 42px;
-                --digit-font: 1.25rem;
-                --digit-gap: 5px;
-                --group-gap: 14px;
-                --container-padding: 60px;
-                --header-height: 115px;
-            }
-            
-            .container {
-                max-width: 700px;
-            }
-            
-            .row-label {
-                min-width: 40px;
-                font-size: 0.8rem;
-            }
-            
-            .shortcuts-hint {
-                display: block;
-            }
+            :root { --digit-size: 36px; --digit-font: 1.15rem; --digit-gap: 4px; --group-gap: 11px; --container-padding: 58px; --header-height: 135px; }
+            .container { max-width: 720px; }
+            .row-label { min-width: 36px; font-size: 0.65rem; }
+            .shortcuts-hint { display: block; }
+            .side-btn { width: 48px; height: 48px; }
         }
 
-        /* Desktop (900px+) - 10 digits per row */
         @media (min-width: 900px) {
-            :root {
-                --digit-size: 48px;
-                --digit-font: 1.4rem;
-                --digit-gap: 6px;
-                --group-gap: 18px;
-                --container-padding: 20px;
-                --header-height: 120px;
-            }
-            
-            .container {
-                max-width: 800px;
-            }
-            
-            .row-label {
-                min-width: 50px;
-                font-size: 0.9rem;
-            }
-            
-            .sticky-current-digit {
-                font-size: 3rem;
-            }
-            
-            .speed-btn-side {
-                width: 55px;
-                height: 65px;
-            }
-            
-            .shortcuts-hint {
-                display: block;
-            }
-            
-            .digit {
-                border-radius: 8px;
-            }
+            :root { --digit-size: 40px; --digit-font: 1.25rem; --digit-gap: 5px; --group-gap: 14px; --container-padding: 20px; --header-height: 130px; }
+            .container { max-width: 820px; }
+            .row-label { min-width: 42px; font-size: 0.75rem; }
+            .sticky-current-digit { font-size: 2.8rem; }
+            .side-btn { width: 52px; height: 52px; font-size: 1rem; }
+            .shortcuts-hint { display: block; }
         }
 
-        /* Landscape on phones */
         @media (max-height: 500px) and (orientation: landscape) {
-            :root {
-                --header-height: 95px;
-            }
-            
-            .sticky-header {
-                padding: 4px 10px;
-            }
-            
-            .sticky-row-2 {
-                margin-top: 4px;
-            }
-            
-            .sticky-current-digit {
-                font-size: 2rem;
-            }
+            :root { --header-height: 115px; }
+            .sticky-header { padding: 3px 8px; }
+            .sticky-row-2, .sticky-row-3 { margin-top: 3px; }
+            .sticky-current-digit { font-size: 1.7rem; }
         }
     </style>
 </head>
 <body>
+    <!-- Target Reached Notification -->
+    <div class="target-reached" id="targetReached">
+        <h2>🎉 Target Reached!</h2>
+        <p id="targetMessage">You recited 300 digits!</p>
+        <button class="close-btn" onclick="closeTargetNotification()">Continue</button>
+    </div>
+
     <!-- Sticky Header -->
     <div class="sticky-header">
         <div class="sticky-row-1">
@@ -645,7 +561,7 @@
             </div>
             <div class="sticky-stats">
                 <div class="sticky-stat">
-                    <div class="sticky-stat-value position" id="stickyPosition">0/300</div>
+                    <div class="sticky-stat-value position" id="stickyPosition">0/1000</div>
                     <div class="sticky-stat-label">Position</div>
                 </div>
                 <div class="sticky-stat">
@@ -659,12 +575,19 @@
             </div>
         </div>
         <div class="sticky-row-2">
+            <div class="target-input-container">
+                <span class="target-label">Stop at:</span>
+                <input type="number" class="target-input" id="targetInput" min="1" max="1000" value="300" placeholder="300">
+                <button class="target-set-btn" onclick="setTarget()">Set</button>
+            </div>
             <div class="sticky-speed">
                 <span class="sticky-speed-label">1</span>
                 <input type="range" class="sticky-speed-slider" id="speedSlider" min="1" max="10" step="0.25" value="5">
                 <span class="sticky-speed-label">10</span>
                 <span class="sticky-speed-value" id="speedValue">5.00/s</span>
             </div>
+        </div>
+        <div class="sticky-row-3">
             <div class="sticky-controls">
                 <button class="sticky-btn start" id="startBtn" onclick="startAuto()">▶ Start</button>
                 <button class="sticky-btn pause" id="pauseBtn" onclick="pauseAuto()" disabled>⏸ Pause</button>
@@ -673,26 +596,56 @@
         </div>
     </div>
 
-    <!-- Side Speed Buttons -->
-    <button class="speed-btn-side slower" id="slowerBtn">
-        <span>➖</span>
-        <span class="label">SLOWER</span>
-        <span class="value" id="slowerValue">5.0</span>
-    </button>
-    <button class="speed-btn-side faster" id="fasterBtn">
-        <span>➕</span>
-        <span class="label">FASTER</span>
-        <span class="value" id="fasterValue">5.0</span>
-    </button>
+    <!-- Left Side Panel -->
+    <div class="side-panel left">
+        <button class="side-btn slower" id="slowerBtn">
+            <span>➖</span>
+            <span class="label">SLOWER</span>
+            <span class="value" id="slowerValue">5.0</span>
+        </button>
+        <button class="side-btn start" id="sideStartBtn" onclick="startAuto()">
+            <span>▶</span>
+            <span class="label">START</span>
+        </button>
+        <button class="side-btn pause" id="sidePauseBtn" onclick="pauseAuto()">
+            <span>⏸</span>
+            <span class="label">PAUSE</span>
+        </button>
+        <button class="side-btn reset" onclick="resetAll()">
+            <span>🔄</span>
+            <span class="label">RESET</span>
+        </button>
+    </div>
+
+    <!-- Right Side Panel -->
+    <div class="side-panel right">
+        <button class="side-btn faster" id="fasterBtn">
+            <span>➕</span>
+            <span class="label">FASTER</span>
+            <span class="value" id="fasterValue">5.0</span>
+        </button>
+        <button class="side-btn start" id="sideStartBtn2" onclick="startAuto()">
+            <span>▶</span>
+            <span class="label">START</span>
+        </button>
+        <button class="side-btn pause" id="sidePauseBtn2" onclick="pauseAuto()">
+            <span>⏸</span>
+            <span class="label">PAUSE</span>
+        </button>
+        <button class="side-btn reset" onclick="resetAll()">
+            <span>🔄</span>
+            <span class="label">RESET</span>
+        </button>
+    </div>
 
     <div class="container">
         <header class="header">
             <h1>🥧 Pi Recitation Verifier</h1>
-            <p>300 digits after 3. • Real-time verification</p>
+            <p>1000 digits after 3. • Real-time verification</p>
         </header>
 
         <div class="digits-section">
-            <div class="digits-title">📋 All 300 Digits</div>
+            <div class="digits-title">📋 All 1000 Digits</div>
             
             <div class="digits-legend">
                 <div class="legend-item">
@@ -716,7 +669,7 @@
                     <div class="progress-bar" id="progressBar"></div>
                 </div>
                 <div class="progress-text">
-                    <span id="progressRecited">0</span> recited • <span id="progressRemaining">300</span> remaining
+                    <span id="progressRecited">0</span> recited • <span id="progressRemaining">1000</span> remaining
                 </div>
             </div>
         </div>
@@ -732,7 +685,7 @@
                 <a href="https://www.angio.net/pi/digits.html" target="_blank" class="verify-link">🔢 Angio.net</a>
                 <a href="https://www.math.com/tables/constants/pi.htm" target="_blank" class="verify-link">📐 Math.com</a>
                 <a href="https://oeis.org/A000796" target="_blank" class="verify-link">🧮 OEIS</a>
-                <a href="https://www.wolframalpha.com/input?i=first+300+digits+of+pi" target="_blank" class="verify-link">🐺 Wolfram</a>
+                <a href="https://www.wolframalpha.com/input?i=first+1000+digits+of+pi" target="_blank" class="verify-link">🐺 Wolfram</a>
                 <a href="https://stuff.mit.edu/afs/sipb/contrib/pi/" target="_blank" class="verify-link">🎓 MIT</a>
             </div>
         </div>
@@ -743,8 +696,11 @@
     </div>
 
     <script>
-        const PI_DIGITS = "141592653589793238462643383279502884197169399375105820974944592307816406286208998628034825342117067982148086513282306647093844609550582231725359408128481117450284102701938521105559644622948954930381964428810975665933446128475648233786783165271201909145648566923460348610454326648213393607260249141273724587006606315588174881520920962829254091715364367892590360011330530548820466521384146951941511609";
+        // VERIFIED 1000 digits of Pi after decimal (from angio.net official source)
+        const PI_DIGITS = "1415926535897932384626433832795028841971693993751058209749445923078164062862089986280348253421170679821480865132823066470938446095505822317253594081284811174502841027019385211055596446229489549303819644288109756659334461284756482337867831652712019091456485669234603486104543266482133936072602491412737245870066063155881748815209209628292540917153643678925903600113305305488204665213841469519415116094330572703657595919530921861173819326117931051185480744623799627495673518857527248912279381830119491298336733624406566430860213949463952247371907021798609437027705392171762931767523846748184676694051320005681271452635608277857713427577896091736371787214684409012249534301465495853710507922796892589235420199561121290219608640344181598136297747713099605187072113499999983729780499510597317328160963185950244594553469083026425223082533446850352619311881710100031378387528865875332083814206171776691473035982534904287554687311595628638823537875937519577818577805321712268066130019278766111959092164201989";
 
+        const TOTAL_DIGITS = 1000;
+        let targetDigits = 300; // Default target
         let currentPosition = 0;
         let isRunning = false;
         let isPaused = false;
@@ -754,14 +710,12 @@
         let timerInterval = null;
         let speed = 5;
 
-        // Determine digits per row based on screen width
         function getDigitsPerRow() {
             const width = window.innerWidth;
-            if (width < 480) return 5;  // Mobile: 5 digits = large & readable
-            return 10;                   // Tablet/Desktop: 10 digits
+            if (width < 480) return 5;
+            return 10;
         }
 
-        // Initialize grid
         function initDigitsGrid() {
             const digitsGrid = document.getElementById('digitsGrid');
             digitsGrid.innerHTML = '';
@@ -794,7 +748,6 @@
                     const idx = row * digitsPerRow + i;
                     if (idx >= PI_DIGITS.length) break;
                     
-                    // Add space every 5 digits
                     if (i > 0 && i % 5 === 0) {
                         const space = document.createElement('span');
                         space.className = 'digit-space';
@@ -813,9 +766,7 @@
             }
         }
 
-        // Update display
         function updateDisplay() {
-            // Update header
             document.getElementById('stickyCurrentDigit').textContent = 
                 currentPosition > 0 ? PI_DIGITS[currentPosition - 1] : '-';
             
@@ -829,9 +780,8 @@
             document.getElementById('stickyNext2').textContent = 
                 currentPosition < PI_DIGITS.length - 1 ? PI_DIGITS[currentPosition + 1] : '-';
             
-            document.getElementById('stickyPosition').textContent = `${currentPosition}/300`;
+            document.getElementById('stickyPosition').textContent = `${currentPosition}/${TOTAL_DIGITS}`;
             
-            // Update grid
             for (let i = 0; i < PI_DIGITS.length; i++) {
                 const digit = document.getElementById(`digit-${i}`);
                 if (digit) {
@@ -846,11 +796,10 @@
                 }
             }
             
-            // Update progress
-            const progress = (currentPosition / PI_DIGITS.length) * 100;
+            const progress = (currentPosition / TOTAL_DIGITS) * 100;
             document.getElementById('progressBar').style.width = `${progress}%`;
             document.getElementById('progressRecited').textContent = currentPosition;
-            document.getElementById('progressRemaining').textContent = PI_DIGITS.length - currentPosition;
+            document.getElementById('progressRemaining').textContent = TOTAL_DIGITS - currentPosition;
             
             // Auto-scroll
             if (currentPosition > 0) {
@@ -860,14 +809,30 @@
                     const headerHeight = document.querySelector('.sticky-header').offsetHeight;
                     const viewportHeight = window.innerHeight;
                     
-                    if (rect.top < headerHeight + 20 || rect.bottom > viewportHeight - 40) {
-                        currentDigit.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'center'
-                        });
+                    if (rect.top < headerHeight + 15 || rect.bottom > viewportHeight - 35) {
+                        currentDigit.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }
             }
+        }
+
+        function setTarget() {
+            const input = document.getElementById('targetInput');
+            let val = parseInt(input.value);
+            if (isNaN(val) || val < 1) val = 1;
+            if (val > TOTAL_DIGITS) val = TOTAL_DIGITS;
+            targetDigits = val;
+            input.value = val;
+            alert(`Target set to ${targetDigits} digits!`);
+        }
+
+        function showTargetReached() {
+            document.getElementById('targetMessage').textContent = `You recited ${targetDigits} digits!`;
+            document.getElementById('targetReached').style.display = 'block';
+        }
+
+        function closeTargetNotification() {
+            document.getElementById('targetReached').style.display = 'none';
         }
 
         function navigate(delta) {
@@ -878,6 +843,12 @@
                 if (currentPosition > 0 && startTime === null && !isRunning) {
                     startTime = Date.now();
                     startTimer();
+                }
+                
+                // Check if target reached
+                if (currentPosition === targetDigits) {
+                    pauseAuto();
+                    showTargetReached();
                 }
             }
         }
@@ -899,31 +870,50 @@
         }
 
         function startAuto() {
-            if (currentPosition >= PI_DIGITS.length) resetAll();
+            if (currentPosition >= PI_DIGITS.length || currentPosition >= targetDigits) {
+                if (currentPosition >= targetDigits && currentPosition < PI_DIGITS.length) {
+                    // Continue past target if user clicks start again
+                } else {
+                    resetAll();
+                }
+            }
+            
             isRunning = true;
             isPaused = false;
             if (startTime === null) startTime = Date.now() - elapsedTime;
             startTimer();
             
             intervalId = setInterval(() => {
-                if (currentPosition < PI_DIGITS.length) {
+                if (currentPosition < PI_DIGITS.length && currentPosition < targetDigits) {
                     currentPosition++;
                     updateDisplay();
+                    
+                    // Check if target reached
+                    if (currentPosition === targetDigits) {
+                        pauseAuto();
+                        showTargetReached();
+                    }
                 } else {
                     pauseAuto();
+                    if (currentPosition >= targetDigits) {
+                        showTargetReached();
+                    }
                 }
             }, 1000 / speed);
             
-            document.getElementById('startBtn').disabled = true;
-            document.getElementById('pauseBtn').disabled = false;
+            updateButtonStates(true);
         }
 
         function pauseAuto() {
             isPaused = true;
             isRunning = false;
             if (intervalId) { clearInterval(intervalId); intervalId = null; }
-            document.getElementById('startBtn').disabled = false;
-            document.getElementById('pauseBtn').disabled = true;
+            updateButtonStates(false);
+        }
+
+        function updateButtonStates(running) {
+            document.getElementById('startBtn').disabled = running;
+            document.getElementById('pauseBtn').disabled = !running;
         }
 
         function togglePlayPause() {
@@ -940,8 +930,7 @@
             document.getElementById('stickyTime').textContent = '0:00';
             document.getElementById('stickySpeed').textContent = '0.0';
             updateDisplay();
-            document.getElementById('startBtn').disabled = false;
-            document.getElementById('pauseBtn').disabled = true;
+            updateButtonStates(false);
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -955,9 +944,13 @@
             if (isRunning && !isPaused) {
                 clearInterval(intervalId);
                 intervalId = setInterval(() => {
-                    if (currentPosition < PI_DIGITS.length) {
+                    if (currentPosition < PI_DIGITS.length && currentPosition < targetDigits) {
                         currentPosition++;
                         updateDisplay();
+                        if (currentPosition === targetDigits) {
+                            pauseAuto();
+                            showTargetReached();
+                        }
                     } else {
                         pauseAuto();
                     }
@@ -969,6 +962,11 @@
         document.getElementById('speedSlider').addEventListener('input', (e) => updateSpeed(parseFloat(e.target.value)));
         document.getElementById('slowerBtn').addEventListener('click', () => updateSpeed(speed - 0.25));
         document.getElementById('fasterBtn').addEventListener('click', () => updateSpeed(speed + 0.25));
+
+        // Enter key to set target
+        document.getElementById('targetInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') setTarget();
+        });
 
         document.addEventListener('keydown', function(e) {
             switch(e.code) {
@@ -983,7 +981,6 @@
             }
         });
 
-        // Handle resize - rebuild grid
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
